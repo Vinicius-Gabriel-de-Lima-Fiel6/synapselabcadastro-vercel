@@ -1,10 +1,16 @@
+// Modal
+const modal = document.getElementById("modal");
+document.getElementById("open-terms").onclick = () => modal.style.display = "block";
+document.getElementById("close-modal").onclick = () => modal.style.display = "none";
+window.onclick = (e) => { if(e.target == modal) modal.style.display = "none"; }
+
+// Form Submit
 document.getElementById('checkout-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('btn-submit');
-    btn.disabled = true;
-    btn.innerText = "PROCESSANDO...";
+    btn.disabled = true; btn.innerText = "ATIVANDO...";
 
-    const formData = {
+    const payload = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
@@ -16,23 +22,19 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
     };
 
     try {
-        const response = await fetch('/api/checkout', {
+        const res = await fetch('/api/checkout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            body: JSON.stringify(payload)
         });
 
-        if (response.ok) {
-            alert("✨ CONTA SINAPSESLAB ATIVADA COM SUCESSO!");
+        if (res.ok) {
+            alert("✨ SUCESSO! Verifique seu WhatsApp e E-mail.");
             window.location.reload();
         } else {
-            const err = await response.json();
-            alert("ERRO NO CADASTRO: " + err.detail);
+            const err = await res.json();
+            alert("ERRO: " + err.detail);
         }
-    } catch (f) {
-        alert("FALHA DE CONEXÃO COM O SERVIDOR.");
-    } finally {
-        btn.disabled = false;
-        btn.innerText = "FINALIZAR E ATIVAR AGORA";
-    }
+    } catch (err) { alert("Falha na conexão."); }
+    finally { btn.disabled = false; btn.innerText = "FINALIZAR E ATIVAR AGORA"; }
 });
