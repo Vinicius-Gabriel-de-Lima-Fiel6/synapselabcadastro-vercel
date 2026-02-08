@@ -5,9 +5,7 @@ import bcrypt
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from twilio.rest import Client as TwilioClient
 import os
-from datetime import datetime
 
 app = FastAPI()
 
@@ -15,11 +13,6 @@ app = FastAPI()
 url: str = os.getenv("SUPABASE_URL", "")
 key: str = os.getenv("SUPABASE_KEY", "")
 supabase: Client = create_client(url, key)
-
-# --- Configurações Twilio ---
-TWILIO_SID = os.getenv("TWILIO_ACCOUNT_SID")
-TWILIO_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
-TWILIO_FROM = os.getenv("TWILIO_WHATSAPP_NUMBER") # Ex: 'whatsapp:+14155238886'
 
 class CadastroSchema(BaseModel):
     nome: str
@@ -30,34 +23,6 @@ class CadastroSchema(BaseModel):
     senha: str
     plano: str
     metodo: str
-
-def enviar_whatsapp_welcome(numero_destino, nome, empresa):
-    """Envia notificação via WhatsApp usando Twilio"""
-    try:
-        client = TwilioClient(TWILIO_SID, TWILIO_TOKEN)
-        
-        # Formata o número (garantindo que tenha o prefixo do país +55)
-        # Se o usuário não digitar +55, o código adiciona
-        num = numero_destino.strip().replace(" ", "").replace("-", "").replace("(", "").replace(")", "")
-        if not num.startswith("+"):
-            num = f"+55{num}"
-            
-        mensagem = (
-            f"🧪 *SynapseLab* \n\n"
-            f"Olá *{nome}*! 🎉\n"
-            f"A licença para o laboratório *{empresa}* foi ativada com sucesso.\n\n"
-            f"Seu acesso já está liberado. Verifique seu e-mail para mais detalhes."
-        )
-
-        client.messages.create(
-            from_=TWILIO_FROM,
-            body=mensagem,
-            to=f"whatsapp:{num}"
-        )
-        return True
-    except Exception as e:
-        print(f"Erro WhatsApp: {e}")
-        return False
 
 def enviar_email_welcome(email_dest, nome, empresa):
     remetente = os.getenv("EMAIL_USER")
@@ -72,11 +37,12 @@ def enviar_email_welcome(email_dest, nome, empresa):
     <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
         <h2 style="color: #10b981;">🧪 SynapseLab Ativado!</h2>
         <p>Olá <b>{nome}</b>,</p>
-        <p>A empresa <b>{empresa}</b> agora faz parte da nossa rede de laboratórios inteligentes.</p>
+        <p>A licença para a empresa <b>{empresa}</b> foi processada com sucesso.</p>
         <div style="background: #f0fdfa; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981;">
-            <p><b>Login:</b> {email_dest}</p>
-            <p><b>Senha:</b> A senha criada no cadastro.</p>
+            <p><b>Acesso:</b> {email_dest}</p>
+            <p><b>Senha:</b> A senha definida no cadastro.</p>
         </div>
+        <p style="margin-top: 20px;">Nosso time de suporte entrará em contato em breve.</p>
         <p style="font-size: 12px; color: #666;">Suporte: (61) 9331-4870</p>
     </div>
     """
@@ -102,21 +68,31 @@ async def process_checkout(data: CadastroSchema):
 
         # 3. Criar Organização
         org_res = supabase.table("organizations").insert({
-            "name": data.empresa, "plano_ativo": data.plano, 
-            "metodo_pagto": data.metodo, "status_assinatura": "ativo"
+            "name": data.empresa, 
+            "plano_ativo": data.plano, 
+            "metodo_pagto": data.metodo, 
+            "status_assinatura": "ativo"
         }).execute()
+        
+        if not org_res.data:
+            raise Exception("Erro ao criar organização")
+            
         org_id = org_res.data[0]['id']
 
         # 4. Criar Usuário
         supabase.table("users").insert({
-            "username": data.nome, "email": data.email, "password_hash": pw_hash,
-            "org_name": data.empresa, "org_id": org_id, "role": "ADM",
-            "cpf_cnpj": data.cpf_cnpj, "whatsapp": data.whatsapp
+            "username": data.nome, 
+            "email": data.email, 
+            "password_hash": pw_hash,
+            "org_name": data.empresa, 
+            "org_id": org_id, 
+            "role": "ADM",
+            "cpf_cnpj": data.cpf_cnpj, 
+            "whatsapp": data.whatsapp
         }).execute()
 
-        # 5. Notificações Multicanal
+        # 5. Notificação por E-mail
         enviar_email_welcome(data.email, data.nome, data.empresa)
-        enviar_whatsapp_welcome(data.whatsapp, data.nome, data.empresa)
 
         return {"message": "Sucesso"}
 
