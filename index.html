@@ -1,45 +1,78 @@
-/* Fundo limpo com leve gradiente */
-.stApp {
-    background: radial-gradient(circle, #f0fdfa 0%, #e2e8f0 100%);
-}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout SynapseLab</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-circle">
+                <img src="https://via.placeholder.com/80?text=SL" alt="SynapseLab" id="logo-img">
+            </div>
+            <h1>Ativar Licença SynapseLab</h1>
+            <p>Ambiente de Checkout Seguro</p>
+            <div class="divider-glow"></div>
+        </div>
 
-/* Card centralizado e flutuante */
-.stForm {
-    background-color: white !important;
-    padding: 40px !important;
-    border-radius: 20px !important;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-    border: none !important;
-}
+        <form id="checkout-form">
+            <div class="section-title">1. Dados do Administrador</div>
+            <div class="row">
+                <input type="text" id="nome" placeholder="Nome Completo *" required>
+                <input type="email" id="email" placeholder="E-mail de Acesso *" required>
+            </div>
+            <div class="row">
+                <input type="text" id="cpf_cnpj" placeholder="CPF ou CNPJ *" required>
+                <input type="text" id="whatsapp" placeholder="WhatsApp *" required>
+            </div>
 
-/* Inputs arredondados e suaves */
-.stTextInput>div>div>input {
-    border-radius: 10px !important;
-    border: 1px solid #e2e8f0 !important;
-    padding: 10px !important;
-}
+            <div class="section-title">2. Sobre o Laboratório</div>
+            <input type="text" id="empresa" placeholder="Nome da Instituição/Empresa *" required>
+            <input type="password" id="senha" placeholder="Crie uma Senha Master *" required>
 
-/* Botão principal (Verde Mentolado) */
-.stButton>button {
-    background: linear-gradient(135deg, #2dd4bf 0%, #0d9488 100%) !important;
-    color: white !important;
-    font-size: 18px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.5px !important;
-    border-radius: 12px !important;
-    border: none !important;
-    height: 55px !important;
-    transition: all 0.3s ease !important;
-    box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4) !important;
-}
+            <div class="divider"></div>
+            
+            <div class="section-title">3. Configuração do Plano</div>
+            <select id="plano">
+                <option value="Mensal">Plano Mensal</option>
+                <option value="Semestral">Plano Semestral</option>
+                <option value="Anual">Plano Anual</option>
+            </select>
 
-.stButton>button:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 20px rgba(45, 212, 191, 0.6) !important;
-}
+            <div class="payment-methods">
+                <label class="radio-container">
+                    <input type="radio" name="metodo" value="Cartão de Crédito" checked>
+                    <span class="checkmark"></span> Cartão
+                </label>
+                <label class="radio-container">
+                    <input type="radio" name="metodo" value="PIX">
+                    <span class="checkmark"></span> PIX
+                </label>
+                <label class="radio-container">
+                    <input type="radio" name="metodo" value="Boleto">
+                    <span class="checkmark"></span> Boleto
+                </label>
+            </div>
 
-/* Ajuste nos títulos */
-h1, h2, h3 {
-    color: #111827 !important;
-    font-family: 'Inter', sans-serif !important;
-}
+            <div id="card-info">
+                <input type="text" placeholder="0000 0000 0000 0000" maxlength="16">
+                <div class="row">
+                    <input type="text" placeholder="MM/AA">
+                    <input type="text" placeholder="CVV">
+                </div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="concordo" required>
+                <label for="concordo">Declaro que li e aceito os Termos de Uso.</label>
+            </div>
+
+            <button type="submit" id="btn-submit">FINALIZAR E ATIVAR AGORA</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
