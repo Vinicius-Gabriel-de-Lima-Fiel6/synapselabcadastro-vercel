@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/api/cadastro", "destination": "/api/cadastro.js" },
-    { "source": "/(.*)", "destination": "/public/$1" }
+    { "source": "/api/(.*)", "destination": "/api/index.py" },
+    { "source": "/(.*)", "destination": "/$1" }
   ]
 }
