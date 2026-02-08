@@ -1,23 +1,21 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from supabase import create_client
+from supabase import create_client, Client
 import bcrypt
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import os
+from datetime import datetime
 
 app = FastAPI()
 
-# Configurações via Variáveis de Ambiente (Vercel Dashboard)
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-EMAIL_USER = os.getenv("EMAIL_USER")
-EMAIL_PASS = os.getenv("EMAIL_PASS")
+# Configuração Supabase
+url: str = os.getenv("SUPABASE_URL", "")
+key: str = os.getenv("SUPABASE_KEY", "")
+supabase: Client = create_client(url, key)
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
-class CheckoutData(BaseModel):
+class CadastroSchema(BaseModel):
     nome: str
     email: str
     cpf_cnpj: str
@@ -27,62 +25,65 @@ class CheckoutData(BaseModel):
     plano: str
     metodo: str
 
-def enviar_email(email_destino, nome_usuario, nome_empresa):
+def enviar_email_welcome(email_dest, nome, empresa):
+    remetente = os.getenv("EMAIL_USER")
+    senha_email = os.getenv("EMAIL_PASS")
+    
     msg = MIMEMultipart()
-    msg['From'] = EMAIL_USER
-    msg['To'] = email_destino
-    msg['Subject'] = f"Bem-vindo ao SynapseLab - Acesso Liberado: {nome_empresa}"
-    
-    corpo_html = f"""
-    <html>
-        <body style="font-family: sans-serif; color: #333;">
-            <div style="max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
-                <h1 style="color: #0d9488;">🧪 SynapseLab</h1>
-                <h2>Sua licença foi ativada, {nome_usuario}!</h2>
-                <p>O <strong>{nome_empresa}</strong> agora faz parte do futuro.</p>
-                <div style="background: #f0fdfa; padding: 15px; border-radius: 10px;">
-                    <p><strong>Login:</strong> {email_destino}</p>
-                    <p><strong>Acesse aqui:</strong> <a href="#">Link do Sistema</a></p>
-                </div>
-                <p>Suporte WhatsApp: (61) 9331-4870</p>
-            </div>
-        </body>
-    </html>
+    msg['From'] = remetente
+    msg['To'] = email_dest
+    msg['Subject'] = f"🚀 Bem-vindo ao SynapseLab: {empresa}"
+
+    html = f"""
+    <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px;">
+        <h2 style="color: #0d9488;">Sua licença SynapseLab está ativa!</h2>
+        <p>Olá <b>{nome}</b>,</p>
+        <p>A empresa <b>{empresa}</b> agora tem acesso total à nossa inteligência.</p>
+        <div style="background: #f0fdfa; padding: 15px; border-radius: 8px;">
+            <p><b>Login:</b> {email_dest}</p>
+            <p><b>Senha:</b> A que você cadastrou.</p>
+        </div>
+        <p>Suporte: (61) 9331-4870</p>
+    </div>
     """
-    msg.attach(MIMEText(corpo_html, 'html'))
-    
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.starttls()
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.send_message(msg)
+    msg.attach(MIMEText(html, 'html'))
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(remetente, senha_email)
+            server.send_message(msg)
+    except Exception as e:
+        print(f"Erro e-mail: {e}")
 
 @app.post("/api/checkout")
-async def checkout(data: CheckoutData):
+async def process_checkout(data: CadastroSchema):
     try:
-        # Check Unicidade
+        # 1. Verificar se empresa existe
         check = supabase.table("organizations").select("id").eq("name", data.empresa).execute()
         if check.data:
-            raise HTTPException(status_code=400, detail="Empresa já cadastrada")
+            raise HTTPException(status_code=400, detail="Esta empresa já possui cadastro.")
 
-        # Hash Senha
-        pwd_hash = bcrypt.hashpw(data.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        # 2. Hash da senha
+        pw_hash = bcrypt.hashpw(data.senha.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
-        # Insert Org
-        res_org = supabase.table("organizations").insert({
+        # 3. Criar Organização
+        org_res = supabase.table("organizations").insert({
             "name": data.empresa, "plano_ativo": data.plano, 
             "metodo_pagto": data.metodo, "status_assinatura": "ativo"
         }).execute()
-        org_id = res_org.data[0]['id']
+        org_id = org_res.data[0]['id']
 
-        # Insert User
+        # 4. Criar Usuário
         supabase.table("users").insert({
-            "username": data.nome, "email": data.email, "password_hash": pwd_hash,
+            "username": data.nome, "email": data.email, "password_hash": pw_hash,
             "org_name": data.empresa, "org_id": org_id, "role": "ADM",
             "cpf_cnpj": data.cpf_cnpj, "whatsapp": data.whatsapp
         }).execute()
 
-        enviar_email(data.email, data.nome, data.empresa)
-        return {"status": "success"}
+        # 5. E-mail
+        enviar_email_welcome(data.email, data.nome, data.empresa)
+
+        return {"message": "Sucesso"}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
