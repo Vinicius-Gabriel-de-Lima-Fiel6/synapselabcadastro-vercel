@@ -66,23 +66,83 @@ def enviar_email_welcome(email_dest, nome, empresa):
     msg['Subject'] = f"🚀 Bem-vindo ao SynapseLab: {empresa}"
 
     html = f"""
-    <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #10b981;">🧪 SynapseLab Ativado!</h2>
-        <p>Olá <b>{nome}</b>,</p>
-        <p>A licença para a empresa <b>{empresa}</b> foi processada com sucesso.</p>
-        <div style="background: #f0fdfa; padding: 15px; border-radius: 8px; border-left: 4px solid #10b981;">
-            <p><b>Acesso:</b> {email_dest}</p>
-            <p><b>Senha:</b> A que você definiu no cadastro.</p>
-        </div>
-        <p style="font-size: 12px; color: #666;">Suporte Oficial SynapseLab</p>
-    </div>
+    <html>
+    <body style="margin: 0; padding: 0; background-color: #050505; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ffffff;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #050505; padding: 40px 20px;">
+            <tr>
+                <td align="center">
+                    <table width="600" border="0" cellspacing="0" cellpadding="0" style="background-color: #0d0d0d; border: 1px solid #1a1a1a; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        
+                        <tr>
+                            <td align="center" style="padding: 40px 20px; background: linear-gradient(135deg, #064e3b 0%, #0d0d0d 100%);">
+                                <div style="width: 60px; height: 60px; border: 2px solid #10b981; border-radius: 50%; line-height: 60px; font-weight: 900; font-size: 24px; color: #10b981; margin-bottom: 15px; text-shadow: 0 0 10px #10b981;">SL</div>
+                                <h1 style="margin: 0; font-size: 28px; letter-spacing: -1px;">SmartLabs Platform</h1>
+                                <p style="margin: 5px 0 0; color: #10b981; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Cyber-Physical Intelligent System</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <h2 style="color: #ffffff; font-size: 22px; margin-top: 0;">Bem-vindo à Indústria 4.0, {nome}.</h2>
+                                <p style="color: #a1a1aa; line-height: 1.6;">
+                                    É um prazer confirmar a ativação da licença para a instituição <b>{empresa}</b>. 
+                                    A partir de agora, seu ambiente laboratorial está integrado à nossa malha de inteligência artificial e monitoramento físico em tempo real.
+                                </p>
+                                
+                                <div style="background-color: #141414; border-left: 4px solid #10b981; padding: 20px; margin: 30px 0; border-radius: 4px;">
+                                    <p style="margin: 0; font-size: 14px; color: #10b981; font-weight: bold;">Credenciais de Acesso Master:</p>
+                                    <p style="margin: 10px 0 0; font-size: 14px; color: #ffffff;"><b>Login:</b> {email_dest}</p>
+                                    <p style="margin: 5px 0 0; font-size: 14px; color: #ffffff;"><b>Ambiente:</b> Institucional ADM</p>
+                                </div>
+
+                                <h3 style="color: #10b981; font-size: 16px; text-transform: uppercase; letter-spacing: 1px;">Visão Geral do Ecossistema</h3>
+                                <ul style="color: #a1a1aa; padding-left: 20px; line-height: 1.8; font-size: 14px;">
+                                    <li><b>Núcleo Digital:</b> SaaS Multiempresa com dashboards avançados e integração Power BI.</li>
+                                    <li><b>Inteligência Artificial:</b> Arquitetura de múltiplos agentes para análise preditiva e relatórios autônomos.</li>
+                                    <li><b>Integração Física:</b> Monitoramento de sensores de temperatura, criogenia, vibração e visão computacional para EPIs.</li>
+                                    <li><b>Automação e Segurança:</b> Robôs autônomos e sistemas de contenção de riscos integrados via Edge Functions.</li>
+                                </ul>
+
+                                <h3 style="color: #10b981; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; margin-top: 40px;">Termos de Operação e Compliance</h3>
+                                <div style="font-size: 12px; color: #666; line-height: 1.5; background: #080808; padding: 15px; border-radius: 8px;">
+                                    <p><b>1. Uso Restrito:</b> Esta licença é proprietária e de uso exclusivo da {empresa}.</p>
+                                    <p><b>2. Segurança de Dados:</b> Todas as transações são criptografadas e armazenadas via Supabase (AES-256).</p>
+                                    <p><b>3. Operação Física:</b> O controle de atuadores e robôs via interface web deve seguir os protocolos de segurança internos da sua instituição.</p>
+                                    <p><b>4. Status Beta:</b> Como versão v0.1, o sistema passa por integrações progressivas de IA e simulações físicas constantes.</p>
+                                </div>
+
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 40px;">
+                                    <tr>
+                                        <td align="center">
+                                            <a href="#" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSAR PAINEL DE CONTROLE</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding: 30px; background-color: #080808; border-top: 1px solid #1a1a1a; text-align: center;">
+                                <p style="margin: 0; font-size: 12px; color: #444;">&copy; 2026 SmartLabs Platform – Tecnologia para Laboratórios do Futuro.</p>
+                                <p style="margin: 5px 0 0; font-size: 12px; color: #444;">Suporte Técnico: (61) 9331-4870 | Brasília, DF</p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
     """
     msg.attach(MIMEText(html, 'html'))
-    with smtplib.SMTP("smtp.gmail.com", 587) as server:
-        server.starttls()
-        server.login(remetente, senha_email)
-        server.send_message(msg)
-
+    
+    try:
+        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+            server.starttls()
+            server.login(remetente, senha_email)
+            server.send_message(msg)
+    except Exception as e:
+        print(f"Erro ao disparar e-mail: {e}")
 @app.post("/api/checkout")
 async def process_checkout(data: CadastroSchema):
     # O try/except global do exception_handler vai pegar erros inesperados aqui
