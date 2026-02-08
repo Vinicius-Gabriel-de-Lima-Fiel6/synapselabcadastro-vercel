@@ -1,6 +1,6 @@
-const { createClient } = require('@supabase/supabase-js');
-const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
+import { createClient } from '@supabase/supabase-js';
+import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
 
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
@@ -10,32 +10,51 @@ export default async function handler(req, res) {
     const { nome, email, senha, empresa, cpf, whatsapp, plano, metodo } = req.body;
 
     try {
-        // 1. Lógica do auth_db: Checar se empresa já existe
-        const { data: orgExiste } = await supabase.from('organizations').select('id').eq('name', empresa).single();
-        if (orgExiste) return res.status(400).json({ error: 'Esta instituição já está cadastrada.' });
+        // 1. Checar se empresa já existe (Removido o .single() para evitar erro se não existir)
+        const { data: orgExiste, error: checkErr } = await supabase
+            .from('organizations')
+            .select('id')
+            .eq('name', empresa);
+        
+        if (orgExiste && orgExiste.length > 0) {
+            return res.status(400).json({ error: 'Esta instituição já está cadastrada.' });
+        }
 
-        // 2. Hash da Senha
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(senha, salt);
+        // 2. Hash da Senha (Sync está ok, mas Async é melhor para performance em APIs)
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(senha, salt);
 
         // 3. Criar Organização
         const { data: org, error: orgErr } = await supabase
             .from('organizations')
-            .insert([{ name: empresa, plano_ativo: plano, metodo_pagto: metodo, status_assinatura: 'ativo' }])
-            .select();
-        if (orgErr) throw orgErr;
+            .insert([{ 
+                name: empresa, 
+                plano_ativo: plano, 
+                metodo_pagto: metodo, 
+                status_assinatura: 'ativo' 
+            }])
+            .select()
+            .single(); // Agora usamos single aqui porque queremos o objeto criado
+
+        if (orgErr) throw new Error(`Erro ao criar organização: ${orgErr.message}`);
 
         // 4. Criar Usuário ADM
         const { error: userErr } = await supabase
             .from('users')
             .insert([{
-                username: nome, email, password_hash: hash,
-                org_name: empresa, org_id: org[0].id,
-                role: 'ADM', cpf_cnpj: cpf, whatsapp
+                username: nome, 
+                email, 
+                password_hash: hash,
+                org_name: empresa, 
+                org_id: org.id, // org agora é um objeto por causa do .single()
+                role: 'ADM', 
+                cpf_cnpj: cpf, 
+                whatsapp
             }]);
-        if (userErr) throw userErr;
 
-        // 5. Lógica do email_utils: Enviar Boas-vindas via SMTP
+        if (userErr) throw new Error(`Erro ao criar usuário: ${userErr.message}`);
+
+        // 5. Enviar Boas-vindas via SMTP
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -65,6 +84,7 @@ export default async function handler(req, res) {
         return res.status(200).json({ success: true });
 
     } catch (e) {
+        console.error("Erro interno:", e.message);
         return res.status(500).json({ error: e.message });
     }
 }
