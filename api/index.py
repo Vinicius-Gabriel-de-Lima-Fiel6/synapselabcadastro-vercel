@@ -76,7 +76,7 @@ def enviar_email_welcome(email_dest, nome, empresa):
                         <tr>
                             <td align="center" style="padding: 40px 20px; background: linear-gradient(135deg, #064e3b 0%, #0d0d0d 100%);">
                                 <div style="width: 60px; height: 60px; border: 2px solid #10b981; border-radius: 50%; line-height: 60px; font-weight: 900; font-size: 24px; color: #10b981; margin-bottom: 15px; text-shadow: 0 0 10px #10b981;">SL</div>
-                                <h1 style="margin: 0; font-size: 28px; letter-spacing: -1px;">SmartLabs Platform</h1>
+                                <h1 style="margin: 0; font-size: 28px; letter-spacing: -1px;">Synapselab Platform</h1>
                                 <p style="margin: 5px 0 0; color: #10b981; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Cyber-Physical Intelligent System</p>
                             </td>
                         </tr>
@@ -114,7 +114,9 @@ def enviar_email_welcome(email_dest, nome, empresa):
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 40px;">
                                     <tr>
                                         <td align="center">
-                                            <a href="#" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSAR PAINEL DE CONTROLE</a>
+                                            <a href="https://synapselab.streamlit.app/" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSAR PAINEL DE CONTROLE</a>
+                                            <a href="#" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSE NOSSO SITE</a>
+                                        </td>
                                         </td>
                                     </tr>
                                 </table>
@@ -123,8 +125,8 @@ def enviar_email_welcome(email_dest, nome, empresa):
 
                         <tr>
                             <td style="padding: 30px; background-color: #080808; border-top: 1px solid #1a1a1a; text-align: center;">
-                                <p style="margin: 0; font-size: 12px; color: #444;">&copy; 2026 SmartLabs Platform – Tecnologia para Laboratórios do Futuro.</p>
-                                <p style="margin: 5px 0 0; font-size: 12px; color: #444;">Suporte Técnico: (61) 9331-4870 | Brasília, DF</p>
+                                <p style="margin: 0; font-size: 12px; color: #444;">&copy; 2026 Synapselab Platform – Tecnologia para Laboratórios do Futuro.</p>
+                                <p style="margin: 5px 0 0; font-size: 12px; color: #444;">Suporte Técnico: (92) 99252-7922 | Manaus, AM</p>
                             </td>
                         </tr>
                     </table>
