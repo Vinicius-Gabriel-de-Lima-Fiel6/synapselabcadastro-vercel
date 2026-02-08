@@ -1,102 +1,80 @@
 :root {
-    --bg-dark: #000000;
-    --card-dark: #0a0a0a;
-    --mint: #00ff88; /* Verde Mentolado LabSmartAI */
-    --text-white: #ffffff;
-    --text-dim: #a0a0a0;
-    --border: #1a1a1a;
+    --primary: #2dd4bf;
+    --primary-dark: #0d9488;
+    --bg: #0f172a; /* Fundo Dark suave */
+    --card: #ffffff;
+    --text: #1e293b;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
 body {
-    background-color: var(--bg-dark);
-    color: var(--text-white);
+    font-family: 'Inter', sans-serif;
+    background: radial-gradient(circle, #f0fdfa 0%, #e2e8f0 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    margin: 0;
 }
 
-.checkout-card {
-    background: var(--card-dark);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 40px;
+.container {
+    background: var(--card);
     width: 100%;
     max-width: 600px;
-    box-shadow: 0 0 30px rgba(0, 255, 136, 0.05);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    margin: 20px;
 }
 
-.logo-container {
-    text-align: center;
-    margin-bottom: 30px;
+.header { text-align: center; margin-bottom: 30px; }
+
+.logo-circle {
+    background: #ccfbf1;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.logo-container img {
-    height: 60px; /* Ajuste conforme sua logo */
-    margin-bottom: 10px;
+.divider-glow {
+    height: 4px;
+    width: 80px;
+    background: var(--primary);
+    margin: 15px auto;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
 }
 
-.logo-container h1 {
-    font-size: 24px;
-    font-weight: 800;
-    letter-spacing: -1px;
-}
-
-.logo-container span { color: var(--mint); }
-
-h3 {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: var(--mint);
-    letter-spacing: 2px;
-    margin: 25px 0 15px;
-}
-
-.input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+h3 { font-size: 14px; text-transform: uppercase; color: #64748b; margin-top: 25px; }
 
 input, select {
-    background: #111;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+#submit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: white;
-    width: 100%;
-    margin-bottom: 12px;
-    transition: 0.2s;
-}
-
-input:focus {
-    border-color: var(--mint);
-    outline: none;
-    box-shadow: 0 0 8px rgba(0, 255, 136, 0.2);
-}
-
-.btn-activate {
-    background: var(--mint);
-    color: black;
-    font-weight: 700;
     border: none;
-    padding: 20px;
-    border-radius: 6px;
-    width: 100%;
-    margin-top: 25px;
+    padding: 18px;
+    border-radius: 12px;
+    font-weight: 800;
     cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    margin-top: 20px;
 }
 
-.btn-activate:hover {
-    background: #00cc6e;
-    transform: scale(1.01);
+#submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(45, 212, 191, 0.4);
 }
-
-.btn-activate:disabled {
-    background: #333;
-    color: #666;
-    cursor: not-allowed;
-}
-
-hr { border: 0; border-top: 1px solid var(--border); margin: 20px 0; }
