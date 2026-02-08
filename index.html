@@ -3,64 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SynapseLab | Checkout</title>
+    <title>SynapseLab | Checkout Oficial</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="glow-bg"></div>
+    <div class="background-overlay"></div>
     <div class="container">
         <div class="header">
-            <div class="logo-circle">🧪</div>
+            <a href="https://seulinkaqui.com" target="_blank" class="logo-link">
+                <div class="logo-circle">
+                    <img src="https://via.placeholder.com/100/000000/10b981?text=SL" alt="Logo">
+                </div>
+            </a>
             <h1>SynapseLab</h1>
-            <p>SISTEMA DE ATIVAÇÃO BIOTECNOLÓGICA</p>
+            <p>Ativação de Licença</p>
+            <div class="emerald-line"></div>
         </div>
 
         <form id="checkout-form">
-            <div class="section-title">01. DADOS DO ADMINISTRADOR</div>
+            <div class="section-title">1. DADOS DE ADMINISTRADOR</div>
             <div class="row">
                 <input type="text" id="nome" placeholder="Nome Completo *" required>
                 <input type="email" id="email" placeholder="E-mail de Acesso *" required>
             </div>
             <div class="row">
                 <input type="text" id="cpf_cnpj" placeholder="CPF ou CNPJ *" required>
-                <input type="text" id="whatsapp" placeholder="WhatsApp *" required>
+                <input type="text" id="whatsapp" placeholder="WhatsApp (DDD) *" required>
             </div>
 
-            <div class="section-title">02. SOBRE A INSTITUIÇÃO</div>
-            <input type="text" id="empresa" placeholder="Nome da Empresa/Laboratório *" required>
-            <input type="password" id="senha" placeholder="Crie sua Senha Master *" required>
+            <div class="section-title">2. SOBRE O LABORATÓRIO</div>
+            <div class="row">
+                <input type="text" id="empresa" placeholder="Nome da Instituição *" required>
+                <input type="password" id="senha" placeholder="Crie uma Senha Master *" required>
+            </div>
 
-            <div class="section-title">03. CONFIGURAÇÃO DE ACESSO</div>
-            <select id="plano">
-                <option value="Mensal">Assinatura Mensal</option>
-                <option value="Semestral">Assinatura Semestral</option>
-                <option value="Anual">Assinatura Anual</option>
-            </select>
-
-            <div class="payment-grid">
-                <label class="pay-option">
-                    <input type="radio" name="metodo" value="Cartão de Crédito" checked>
-                    <span>CARTÃO</span>
-                </label>
-                <label class="pay-option">
-                    <input type="radio" name="metodo" value="PIX">
-                    <span>PIX</span>
-                </label>
-                <label class="pay-option">
-                    <input type="radio" name="metodo" value="Boleto">
-                    <span>BOLETO</span>
-                </label>
+            <div class="section-title">3. CONFIGURAÇÃO DE PLANO</div>
+            <div class="row-plano">
+                <select id="plano">
+                    <option value="Mensal">Plano Mensal</option>
+                    <option value="Semestral">Plano Semestral</option>
+                    <option value="Anual">Plano Anual</option>
+                </select>
+                <div class="payment-methods">
+                    <label class="pay-btn"><input type="radio" name="metodo" value="Cartão" checked><span>Cartão</span></label>
+                    <label class="pay-btn"><input type="radio" name="metodo" value="PIX"><span>PIX</span></label>
+                    <label class="pay-btn"><input type="radio" name="metodo" value="Boleto"><span>Boleto</span></label>
+                </div>
             </div>
 
             <div class="terms">
                 <input type="checkbox" id="concordo" required>
-                <label for="concordo">Declaro que li e aceito os Termos de Uso.</label>
+                <label for="concordo">Declaro que li e aceito os <span id="open-terms">Termos de Uso e Políticas</span>.</label>
             </div>
 
             <button type="submit" id="btn-submit">FINALIZAR E ATIVAR AGORA</button>
         </form>
     </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Termos de Uso e Privacidade</h2>
+            <div class="terms-scroll">
+                <p><b>1. OBJETO:</b> A SynapseLab fornece licenciamento de software para gestão laboratorial inteligente.</p>
+                <p><b>2. DADOS:</b> Coletamos Nome, CPF/CNPJ e WhatsApp para fins de ativação e suporte, conforme a LGPD.</p>
+                <p><b>3. PAGAMENTO:</b> O acesso é liberado após a confirmação. Planos anuais possuem fidelidade de 12 meses.</p>
+                <p><b>4. SUPORTE:</b> O suporte oficial é prestado via WhatsApp (61) 9331-4870.</p>
+                <p><b>5. RESPONSABILIDADE:</b> O usuário é responsável pela veracidade dos dados e pela guarda da Senha Master.</p>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
