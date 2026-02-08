@@ -30,7 +30,7 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
 
         if (res.ok) {
             alert("✨ SUCESSO! Verifique seu WhatsApp e E-mail.");
-            window.location.reload();
+            
         } else {
             const err = await res.json();
             alert("ERRO: " + err.detail);
