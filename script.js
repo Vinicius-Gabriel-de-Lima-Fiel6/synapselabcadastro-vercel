@@ -1,12 +1,10 @@
 document.getElementById('checkout-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
     const btn = document.getElementById('btn-submit');
-    const originalText = btn.innerText;
-    btn.innerText = "ATIVANDO LICENÇA...";
     btn.disabled = true;
+    btn.innerText = "PROCESSANDO...";
 
-    const formData = {
+    const data = {
         nome: document.getElementById('nome').value,
         email: document.getElementById('email').value,
         cpf_cnpj: document.getElementById('cpf_cnpj').value,
@@ -20,22 +18,21 @@ document.getElementById('checkout-form').addEventListener('submit', async (e) =>
     try {
         const response = await fetch('/api/checkout', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
         });
 
-        const result = await response.json();
-
         if (response.ok) {
-            alert("✨ Perfeito! Sua conta SynapseLab foi criada. Verifique seu e-mail.");
+            alert("✨ Licença ativada! Bem-vindo ao SynapseLab.");
             window.location.reload();
         } else {
-            alert("⚠️ Erro: " + result.detail);
+            const error = await response.json();
+            alert("Erro: " + error.detail);
         }
     } catch (err) {
-        alert("Erro ao conectar com o servidor.");
+        alert("Erro na conexão.");
     } finally {
-        btn.innerText = originalText;
         btn.disabled = false;
+        btn.innerText = "FINALIZAR E ATIVAR AGORA";
     }
 });
