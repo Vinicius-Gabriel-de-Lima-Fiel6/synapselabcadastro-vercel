@@ -1,0 +1,1 @@
+# synapselabcadastro-vercel
