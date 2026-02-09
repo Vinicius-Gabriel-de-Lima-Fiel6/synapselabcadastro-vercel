@@ -113,10 +113,17 @@ def enviar_email_welcome(email_dest, nome, empresa):
 
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top: 40px;">
                                     <tr>
-                                        <td align="center">
-                                            <a href="https://synapselab.streamlit.app/" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSAR PAINEL DE CONTROLE</a>
-                                            <a href="https://synapselabenterprise.vercel.app/" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">ACESSE NOSSO SITE</a>
+                                        <td align="center" style="padding-bottom: 20px;">
+                                            <a href="https://synapselab.streamlit.app/" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                                                ACESSAR PAINEL DE CONTROLE
+                                            </a>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="center">
+                                            <a href="https://synapselabenterprise.vercel.app/" style="background-color: #10b981; color: #000000; padding: 18px 35px; border-radius: 10px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                                                ACESSE NOSSO SITE
+                                            </a>
                                         </td>
                                     </tr>
                                 </table>
